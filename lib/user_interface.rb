@@ -31,7 +31,8 @@ class UserInterface
   end
 
   def prompt_for_ship_placement
-    ship_length = prompt "Which do you wish to place?"
+    ship_length = prompt "Which do you wish to place?" 
+    # remove the ship from unplaced ships
     ship_orientation = prompt "Vertical or horizontal? [vh]"
     ship_row = prompt "Which row?"
     ship_col = prompt "Which column?"
