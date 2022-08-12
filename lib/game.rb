@@ -37,6 +37,8 @@ class Game
     y = hash.fetch(:col)
     orientation = hash.fetch(:orientation)
 
+    fail "Ship is outside boundaries..." unless check_constraint(x,y,length,orientation)
+
     check_unplaced(length) ? remove_ship(length) : "Ship doesn't exist..."
 
     if orientation == :vertical
@@ -48,7 +50,7 @@ class Game
 
     elsif orientation == :horizontal 
 
-      length-1.time do
+      length.times do
         @coords << [x, y]
         x += 1
       end
@@ -56,43 +58,47 @@ class Game
 
   end
 
-  def ship_at?(x,y,arr)
-    arr.any?{|coords| coords == [x,y]}
-  end
-
-
-  def format_board
-    return (1..@game.rows).map do |y|
-      (1..@game.cols).map do |x|
-        next "S" if @game.ship_at?(x, y)
-        next "."
-      end.join
-    end.join("\n")
+  def ship_at?(x,y)
+    @coords.any?{|coords| coords == [x,y]}
   end
 
   private
 
   def check_unplaced(length)
-
     @unplaced_ships.any?{|ship| ship.length == length}
-
   end
 
   def remove_ship(length)
-
     @unplaced_ships.delete_at(unplaced_ships.find_index{|ship| ship.length == length})
-
   end
 
+  def check_constraint(x, y, length, orientation)
+
+    x < 0 || y < 0 ? false : true
+
+    if orientation == :vertical
+
+      length.times do 
+        return false if y > 10
+        y += 1
+      end
+
+    elsif orientation == :horizontal 
+
+      length.times do
+        return false if x > 10
+        x += 1
+      end
+    end
+    return true
+  end
 end
 
-# As a player
-# So that I can prepare for the game
-# I would like to place a ship in a board location
+
 
 # As a player
-# So that I can play a more interesting game
-# I would like to have a range of ship sizes to choose from
+# So that I can have a coherent game
+# I would like ships to be constrained not to overlap
 
 # As a player
 # So the game is more fun to play
@@ -100,9 +106,21 @@ end
 # shots using commands (rather than using IRB to interact with objects)
 
 # As a player
-# So that I can create a layout of ships to outwit my opponent
-# I would like to be able to choose the directions my ships face in
+# So that I can play against a human opponent
+# I would like to play a two-player game
 
 # As a player
-# So that I can have a coherent game
-# I would like ships to be constrained to be on the board
+# So that I can win the game
+# I would like to be able to fire at my opponent's board
+
+# As a player
+# So that I can refine my strategy
+# I would like to know when I have sunk an opponent's ship
+
+# As a player
+# So that I know when to finish playing
+# I would like to know when I have won or lost
+
+# As a player
+# So that I can consider my next shot
+# I would like to be able to see my hits and misses so far

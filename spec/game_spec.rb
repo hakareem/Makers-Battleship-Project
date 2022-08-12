@@ -17,12 +17,21 @@ RSpec.describe Game do
    ship_2 = double :Ship, length: 2
    ship_arr = [ship_1, ship_2]
    game = Game.new(10,10,ship_arr)
-   hash =  {length: 3, orientation: :vertical,row: 0, col: 0}
-   game.place_ship(hash)
-   arr = game.coords
-   expect(game.ship_at?(0,0,arr)).to eq true
-   expect(game.ship_at?(0,1,arr)).to eq true
-   expect(game.ship_at?(0,2,arr)).to eq true
+   game.place_ship({length: 3, orientation: :vertical,row: 2, col: 2})
+   result = game.coords
+   expect(result).to eq [[2,2],[2,3],[2,4]]
+  #  expect(game.ship_at?(2,2)).to eq true
+  #  expect(game.ship_at?(3,5)).to eq false
+  end
+
+  it "ensures that the ships placed are within the constrains of the board" do
+    # expect it to fail
+    ship_1 = double :Ship, length: 3
+    ship_2 = double :Ship, length: 2
+    ship_arr = [ship_1, ship_2]
+    game = Game.new(10,10,ship_arr)
+    hash = {length: 3, orientation: :vertical,row: 10, col: 10}
+    expect{ game.place_ship(hash)}.to raise_error("Ship is outside boundaries...")
   end
 
 
@@ -31,25 +40,21 @@ RSpec.describe Game do
     ship_2 = double :Ship, length: 2
     ship_arr = [ship_1, ship_2]
     game = Game.new(10,10,ship_arr)
-    hash =  {length: 3, orientation: :vertical,row: 0, col: 0}
-    game.place_ship(hash)
+    game.place_ship({length: 3, orientation: :vertical,row: 2, col: 2})
     expect(game.unplaced_ships).to eq [ship_2]
   end
  end
 
  describe "#ship_at?" do
-  it "checks if there is pre existing ship at a given location" do
-   coords_arr = [[1,2]]
-   ship_arr = double :Ship
-   game = Game.new(10,10,ship_arr)
-   coords = double :coords
-   expect(game.ship_at?(1,2,coords_arr)).to eq true
+  it "checks if there is ship at a given location" do
+    ship_1 = double :Ship, length: 3
+    ship_2 = double :Ship, length: 2
+    ship_arr = [ship_1, ship_2]
+    game = Game.new(10,10,ship_arr)
+    game.place_ship({length: 3, orientation: :vertical,row: 3, col: 3})
+    expect(game.ship_at?(3,3)).to eq true
+    expect(game.ship_at?(1,2)).to eq false
   end
  end
 end
 
-# {      length: ship_length.to_i,
-# orientation: {"v" => :vertical, "h" => :horizontal}.fetch(ship_orientation),
-# row: ship_row.to_i,
-# col: ship_col.to_i
-# }
