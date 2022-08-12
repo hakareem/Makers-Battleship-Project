@@ -13,7 +13,9 @@ RSpec.describe Game do
 
  describe "#placed_ships" do
   it "stores coordinates for that ship" do
-   ship_arr = double :Ship
+   ship_1 = double :Ship, length: 3
+   ship_2 = double :Ship, length: 2
+   ship_arr = [ship_1, ship_2]
    game = Game.new(10,10,ship_arr)
    hash =  {length: 3, orientation: :vertical,row: 0, col: 0}
    game.place_ship(hash)
@@ -30,9 +32,8 @@ RSpec.describe Game do
     ship_arr = [ship_1, ship_2]
     game = Game.new(10,10,ship_arr)
     hash =  {length: 3, orientation: :vertical,row: 0, col: 0}
-    expect(check_unplaced).to receive()
     game.place_ship(hash)
-    expect(game.unplaced_ships).to eq [ship_1 , ship_2]
+    expect(game.unplaced_ships).to eq [ship_2]
   end
  end
 

@@ -25,12 +25,6 @@ class Game
     @cols
   end
 
-    #   @game.place_ship(
-    #   length: ship_length.to_i,
-    #   orientation: {"v" => :vertical, "h" => :horizontal}.fetch(ship_orientation),
-    #   row: ship_row.to_i,
-    #   col: ship_col.to_i
-    # )
   def place_ship(hash)
 
     # check if ship is in unplaced ship array //
@@ -42,6 +36,8 @@ class Game
     x = hash.fetch(:row)
     y = hash.fetch(:col)
     orientation = hash.fetch(:orientation)
+
+    check_unplaced(length) ? remove_ship(length) : "Ship doesn't exist..."
 
     if orientation == :vertical
 
@@ -73,6 +69,21 @@ class Game
       end.join
     end.join("\n")
   end
+
+  private
+
+  def check_unplaced(length)
+
+    @unplaced_ships.any?{|ship| ship.length == length}
+
+  end
+
+  def remove_ship(length)
+
+    @unplaced_ships.delete_at(unplaced_ships.find_index{|ship| ship.length == length})
+
+  end
+
 end
 
 # As a player
