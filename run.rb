@@ -13,12 +13,6 @@ class TerminalIO
   end
 end
 
-# io = TerminalIO.new
-# game = Game.new
-# user_interface = UserInterface.new(io, game)
-# user_interface.run
-
-
 io = TerminalIO.new
 list_of_ship = []
 list_of_ship << Ship.new("carrier",5)

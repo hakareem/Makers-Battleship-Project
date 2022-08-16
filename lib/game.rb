@@ -9,11 +9,6 @@ class Game
     @unplaced_ships = unplaced_ships
   end
   
-
-  #initalize
-    # rows && cols
-    # [[x,y], [x,y]...] << all the ship coordinatees on the board
-
   def unplaced_ships
     @unplaced_ships
   end
@@ -27,12 +22,6 @@ class Game
   end
 
   def place_ship(hash)
-
-    # check if ship is in unplaced ship array //
-      ## check_unplaced
-    # remove ship from unplaced ships //
-      ## remove_ship
-
     length = hash.fetch(:length)
     x = hash.fetch(:col)
     y = hash.fetch(:row)
@@ -57,11 +46,16 @@ class Game
         x += 1
       end
     end
-
   end
 
   def ship_at?(x,y)
     @coords.any?{|coords| coords == [x,y]}
+  end
+
+  def place_shot(x,y)
+    if ship_at?(x,y)
+      @coords[x,y] = "X"
+    end
   end
 
   private
