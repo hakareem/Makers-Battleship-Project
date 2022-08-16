@@ -9,8 +9,9 @@ RSpec.describe UserInterface do
       interface = UserInterface.new(io, player1, player2)
       expect(io).to receive(:puts).and_return("Welcome to the game!")
       expect(io).to receive(:puts).and_return("Set up your ships first.")
-    interface.intro
+      interface.intro
     end 
+  end
 
     it "allows the user to setup single ship" do
       io = double(:io)
@@ -21,7 +22,6 @@ RSpec.describe UserInterface do
         double(:ship, length: 2),
         double(:ship, length: 5),
       ])
-
       expect(io).to receive(:puts).with("You have these ships remaining: 2, 5")
       expect(io).to receive(:puts).with("Which do you wish to place?")
       expect(io).to receive(:gets).and_return("2\n")
@@ -31,6 +31,9 @@ RSpec.describe UserInterface do
       expect(io).to receive(:gets).and_return("3\n")
       expect(io).to receive(:puts).with("Which column?")
       expect(io).to receive(:gets).and_return("2\n")
+      expect(player1).to receive(:check_placement).
+      with("2",'3',"2","v")
+      .and_return(true)
       expect(io).to receive(:puts).with("OK.")
       expect(player1).to receive(:place_ship).with({
         length: 2,
@@ -56,12 +59,10 @@ RSpec.describe UserInterface do
       ].join("\n"))
       interface.place_ship_on_board(player1)
       end
-    end
-  end
-  end
 
-  describe "#intro method" do
-   it "creates two boards and decides who goes first" do
+    describe "#intro method" do
+      it "creates two boards and decides who goes first" do
       
+      end
+    end
 end
-

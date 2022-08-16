@@ -11,20 +11,20 @@ RSpec.describe Game do
     end
   end
 
- describe "#placed_ships" do
+  describe "#placed_ships" do
   it "stores coordinates for that ship" do
-   ship_1 = double :Ship, length: 3
-   ship_2 = double :Ship, length: 2
-   ship_arr = [ship_1, ship_2]
-   game = Game.new(10,10,ship_arr)
-   game.place_ship({length: 3, orientation: :vertical,row: 2, col: 2})
-   result = game.coords
-   expect(result).to eq [[2,2],[2,3],[2,4]]
+    ship_1 = double :Ship, length: 3
+    ship_2 = double :Ship, length: 2
+    ship_arr = [ship_1, ship_2]
+    game = Game.new(10,10,ship_arr)
+    game.place_ship({length: 3, orientation: :vertical,row: 2, col: 2})
+    result = game.coords
+    expect(result).to eq [[2,2],[2,3],[2,4]]
   #  expect(game.ship_at?(2,2)).to eq true
   #  expect(game.ship_at?(3,5)).to eq false
   end
 
-  xit "ensures that the ships placed are within the constrains of the board" do
+  it "ensures that the ships placed are within the constrains of the board" do
     # expect it to fail
     ship_1 = double :Ship, length: 3
     ship_2 = double :Ship, length: 2
@@ -35,7 +35,7 @@ RSpec.describe Game do
   end
 
 
-  xit "once ship is placed it's then removed from unplaced ships" do
+  it "once ship is placed it's then removed from unplaced ships" do
     ship_1 = double :Ship, length: 3
     ship_2 = double :Ship, length: 2
     ship_arr = [ship_1, ship_2]
@@ -77,7 +77,6 @@ RSpec.describe Game do
     hash = {length: 3, orientation: :horizontal, row: 3, col: 1}
     expect{game.place_ship(hash)}.to raise_error("Cannot place ship here...")
   end
- end
 
   describe "#ship_at?" do
     it "checks if there is ship at a given location" do
