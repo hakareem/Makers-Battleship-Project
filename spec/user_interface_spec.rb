@@ -47,4 +47,8 @@ RSpec.describe UserInterface do
       interface.run
     end
   end
+
+  describe "#intro method" do
+    it "creates two boards and decides who goes first" do
+      
 end
