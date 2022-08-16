@@ -29,7 +29,6 @@ RSpec.describe "integration" do
     player1 = Game.new(10,10, arr)
     player2 = Game.new(10,10, arr)
     interface = UserInterface.new(io, player1, player2)
-    
   end
  end
 end
