@@ -67,21 +67,32 @@ class UserInterface
   end
 
   def prompt_for_ship_placement(player)
-    ship_length = prompt "Which do you wish to place?" 
-    # remove the ship from unplaced ships
-    ship_orientation = prompt "Vertical or horizontal? [vh]"
-    ship_row = prompt "Which row?"
-    ship_col = prompt "Which column?"
-    # if ship placement is invalid prompt player again
-    # show "Invalid Input, Try Again"
-    
-    show "OK."
-    player.place_ship(
-      length: ship_length.to_i,
-      orientation: {"v" => :vertical, "h" => :horizontal}.fetch(ship_orientation),
-      row: ship_row.to_i,
-      col: ship_col.to_i
-    )
+
+
+    while true do
+      length = prompt "Which do you wish to place?"
+      # remove the ship from unplaced ships 
+      orientation = prompt "Vertical or horizontal? [vh]"
+      row = prompt "Which row?"
+      col = prompt "Which column?"
+
+      #if player.check_placement(x, y, length, orientation) is true break the while loop
+      if player.check_placement(col, row, length, orientation)
+        break
+      else
+        show "Invalid Input, Try Again"
+      end
+      # if ship placement is invalid prompt player again
+      # show "Invalid Input, Try Again"
+    end
+
+      show "OK."
+      player.place_ship(
+        length: length.to_i,
+        orientation: {"v" => :vertical, "h" => :horizontal}.fetch(orientation),
+        row: row.to_i,
+        col: col.to_i
+      )
   end
 
   def format_board(player)

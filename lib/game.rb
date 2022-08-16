@@ -58,6 +58,21 @@ class Game
     end
   end
 
+  def check_placement(x, y, length, orientation)
+    # binding.irb
+    x = x.to_i
+    y = y.to_i
+    length = length.to_i
+    orientation = {"v" => :vertical, "h" => :horizontal}.fetch(orientation)
+
+    if check_unplaced(length) && check_constraint(x, y, length, orientation) && check_overlap(x, y, length, orientation) 
+      return true
+    else
+      return false
+    end
+
+  end
+
   private
 
   def check_unplaced(length)
@@ -114,7 +129,6 @@ class Game
         x += 1
         return false if @coords.any?{|coord| coord == [x, y]} 
       end
-
     end
     return true
   end
