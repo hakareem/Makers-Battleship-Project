@@ -6,24 +6,10 @@ class Game
     @rows = rows
     @coords = []
     @unplaced_ships = unplaced_ships
-    # @player_state = (1..@rows).map do |y|
-    #   (1..@cols).map do |x|
-    #     "."
-    #   end
-    # end
-    #   @opponent_state = (1..@rows).map do |y|
-    #   (1..@cols).map do |x|
-    #     "."
-    #   end
-    # end
   end
   
   def unplaced_ships
     @unplaced_ships
-  end
-
-  def player_state
-    @player_state
   end
 
   def rows
@@ -58,7 +44,6 @@ class Game
         x += 1
       end
     end
-
   end
 
   def ship_at?(x,y)

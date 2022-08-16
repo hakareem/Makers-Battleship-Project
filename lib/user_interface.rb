@@ -1,8 +1,8 @@
 class UserInterface
-  def initialize(io, game1, game2)
+  def initialize(io, player1, player2)
     @io = io
-    @game1 = game1
-    @game2 = game2
+    @player1 = player1
+    @player2 = player2
   end
   
   def intro
@@ -10,43 +10,43 @@ class UserInterface
     show "Set up your ships first."
   end
 
-  def place_ship_on_board(game)
-    show "You have these ships remaining: #{ships_unplaced_message(game)}"
-    prompt_for_ship_placement(game)
+  def place_ship_on_board(player)
+    show "You have these ships remaining: #{ships_unplaced_message(player)}"
+    prompt_for_ship_placement(player)
     show "This is your board now:"
-    show format_board(game)
+    show format_board(player)
   end
 
-  def setup_player(game)
-    place_ship_on_board(game)
+  def setup_player(player)
+    place_ship_on_board(player)
   end
 
-  def setup_board(game1, game2)
-    setup_player(game1)
-    setup_player(game2)
+  def setup_board(player1, player2)
+    setup_player(player1)
+    setup_player(player2)
   end
     
 
-  def prompt_for_player(game)
+  def prompt_for_player(player)
     show "This is your board now:"
-    show format_board(game)
+    show format_board(player)
     ship_row = prompt "Which row?"
     ship_col = prompt "Which column?"
-    if game.ship_at?(ship_row.to_i, ship_col.to_i)
+    if player.ship_at?(ship_row.to_i, ship_col.to_i)
       show "Hit!"
     end
-    game.place_shot(ship_row.to_i,ship_col.to_i)
+    player.place_shot(ship_row.to_i,ship_col.to_i)
   end
 
-  def play(game1, game2)
-    prompt_for_player(game1)
+  def play(player1, player2)
+    prompt_for_player(player1)
   end
 
   def run
     intro
-    setup_player(@game1)
-    setup_player(@game2)
-    play(@game1, @game2)
+    setup_player(@player1)
+    setup_player(@player2)
+    play(@player1, @player2)
   end
 
   private
@@ -60,20 +60,23 @@ class UserInterface
     return @io.gets.chomp
   end
 
-  def ships_unplaced_message(game)
-    return game.unplaced_ships.map do |ship|
+  def ships_unplaced_message(player)
+    return player.unplaced_ships.map do |ship|
       "#{ship.length}"
     end.join(", ")
   end
 
-  def prompt_for_ship_placement(game)
+  def prompt_for_ship_placement(player)
     ship_length = prompt "Which do you wish to place?" 
     # remove the ship from unplaced ships
     ship_orientation = prompt "Vertical or horizontal? [vh]"
     ship_row = prompt "Which row?"
     ship_col = prompt "Which column?"
+    # if ship placement is invalid prompt player again
+    # show "Invalid Input, Try Again"
+    
     show "OK."
-    game.place_ship(
+    player.place_ship(
       length: ship_length.to_i,
       orientation: {"v" => :vertical, "h" => :horizontal}.fetch(ship_orientation),
       row: ship_row.to_i,
@@ -81,16 +84,12 @@ class UserInterface
     )
   end
 
-  def format_board(game)
-    return (1..game.rows).map do |y|
-      (1..game.cols).map do |x|
-        next "S" if game.ship_at?(x, y)
+  def format_board(player)
+    return (1..player.rows).map do |y|
+      (1..player.cols).map do |x|
+        next "S" if player.ship_at?(x, y)
         next "."
       end.join
     end.join("\n")
   end
-
-  # def format_board(game)
-  #   game.player_state.map(&:join).join("\n")
-  # end
 end
