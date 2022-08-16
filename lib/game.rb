@@ -5,6 +5,7 @@ class Game
     @cols = cols
     @rows = rows
     @coords = []
+    #@ships_placed = [ship_object1 ... ]
     @unplaced_ships = unplaced_ships
   end
   
@@ -22,10 +23,11 @@ class Game
 
   def place_ship(hash)
     length = hash.fetch(:length)
-    x = hash.fetch(:row)
-    y = hash.fetch(:col)
+    x = hash.fetch(:col)
+    y = hash.fetch(:row)
     orientation = hash.fetch(:orientation)
 
+    fail "Cannot place ship here..." unless check_overlap(x, y, length, orientation)
     fail "Ship is outside boundaries..." unless check_constraint(x,y,length,orientation)
 
     check_unplaced(length) ? remove_ship(length) : "Ship doesn't exist..."
@@ -86,13 +88,37 @@ class Game
     end
     return true
   end
+
+  # def place_shot(x,y)
+  #   if ship_at?(x,y)
+  #     @coords[x,y] = "X"
+  #     #another instatiated array showing where player has been hit
+  #     #push coords there
+
+  #     #player loses when hitarray.length == @coords
+  #   end
+  # end
+
+
+  def check_overlap(x, y, length, orientation)
+
+    return false if @coords.any?{|coord| coord == [x, y]}
+    if orientation == :vertical
+      length-1.times do
+        y += 1
+        return false if @coords.any?{|coord| coord == [x, y]} 
+      end
+
+    elsif orientation == :horizontal
+      length-1.times do
+        x += 1
+        return false if @coords.any?{|coord| coord == [x, y]} 
+      end
+
+    end
+    return true
+  end
 end
-
-
-
-# As a player
-# So that I can have a coherent game
-# I would like ships to be constrained not to overlap
 
 # As a player
 # So the game is more fun to play
@@ -108,13 +134,15 @@ end
 # I would like to be able to fire at my opponent's board
 
 # As a player
-# So that I can refine my strategy
-# I would like to know when I have sunk an opponent's ship
-
-# As a player
 # So that I know when to finish playing
 # I would like to know when I have won or lost
 
 # As a player
 # So that I can consider my next shot
 # I would like to be able to see my hits and misses so far
+
+## BONUS AT THE END OF TASKS.
+
+# As a player
+# So that I can refine my strategy
+# I would like to know when I have sunk an opponent's ship

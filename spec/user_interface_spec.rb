@@ -58,3 +58,10 @@ RSpec.describe UserInterface do
       end
     end
   end
+  end
+
+  describe "#intro method" do
+   it "creates two boards and decides who goes first" do
+      
+end
+
