@@ -1,12 +1,16 @@
 class Game
-  attr_accessor :coords
+  attr_accessor :coords, :hit_array, :miss_array
 
   def initialize(rows,cols,unplaced_ships)
     @cols = cols
     @rows = rows
     @coords = []
+    @hit_array = []
+    @miss_array = []
     #@ships_placed = [ship_object1 ... ]
     @unplaced_ships = unplaced_ships
+
+    # win condition: if player 1's hit array length is == to @coords.length then player has won
   end
   
   def unplaced_ships
@@ -50,12 +54,6 @@ class Game
 
   def ship_at?(x,y)
     @coords.any?{|coords| coords == [x,y]}
-  end
-
-  def place_shot(x,y)
-    if ship_at?(x,y)
-      @coords[x,y] = "X"
-    end
   end
 
   def check_placement(x, y, length, orientation)
@@ -135,25 +133,13 @@ class Game
 end
 
 # As a player
-# So the game is more fun to play
-# I would like a nice command line interface that lets me enter ship positions and
-# shots using commands (rather than using IRB to interact with objects)
-
-# As a player
 # So that I can play against a human opponent
 # I would like to play a two-player game
-
-# As a player
-# So that I can win the game
-# I would like to be able to fire at my opponent's board
 
 # As a player
 # So that I know when to finish playing
 # I would like to know when I have won or lost
 
-# As a player
-# So that I can consider my next shot
-# I would like to be able to see my hits and misses so far
 
 ## BONUS AT THE END OF TASKS.
 

@@ -177,4 +177,43 @@ RSpec.describe "Integration" do
     user_interface = UserInterface.new(io, player1, player1)
     user_interface.place_ship_on_board(player1)
   end 
+  
+  it "pushes the coords to hit array when a ship has been hit" do
+
+    io = TerminalIO.new
+    ship_1 = Ship.new("Carrier",5)
+    arr = [ship_1]
+    player1 = Game.new(10,10, arr)
+    player2 = Game.new(10,10, arr)
+
+    player1.coords = [[1,1],[1,2],[1,3][1,4]] #Set up player's board
+    user_interface = UserInterface.new(io, player1, player2)
+
+    expect(io).to receive(:puts).with("These are your hits and misses so far:")
+    expect(io).to receive(:puts).with("..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........")
+    expect(io).to receive(:puts).with("Which row?")
+    expect(io).to receive(:gets).and_return("1")
+    expect(io).to receive(:puts).with("Which column?")
+    expect(io).to receive(:gets).and_return("1")
+
+    expect(io).to receive(:puts).with("Hit!")
+
+    user_interface.prompt_for_player(player2, player1)
+
+    expect(player2.hit_array).to eq [[1,1]]
+  end
+
+  it "shows hits and misses so far for shooting player" do
+    io = TerminalIO.new
+    ship_1 = Ship.new("Carrier",5)
+    arr = [ship_1]
+    player1 = Game.new(10,10, arr)
+    player2 = Game.new(10,10, arr)
+
+    player1.hit_array = [[1,1],[1,2],[1,3],[1,4]] 
+    player1.miss_array = [[2,1],[2,2],[2,3],[2,4]] 
+    user_interface = UserInterface.new(io, player1, player2)
+
+    expect(user_interface.format_shots(player1)).to eq "XO........\nXO........\nXO........\nXO........\n..........\n..........\n..........\n..........\n..........\n.........."
+  end
 end
