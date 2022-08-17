@@ -1,7 +1,8 @@
 class Game
-  attr_accessor :coords, :hit_array, :miss_array
+  attr_accessor :coords, :hit_array, :miss_array, :player_name
 
-  def initialize(rows,cols,unplaced_ships)
+  def initialize(player_name,rows,cols,unplaced_ships)
+    @player_name = player_name
     @cols = cols
     @rows = rows
     @coords = []
@@ -50,6 +51,10 @@ class Game
         x += 1
       end
     end
+  end
+
+  def player_name
+    @player_name
   end
 
   def ship_at?(x,y)

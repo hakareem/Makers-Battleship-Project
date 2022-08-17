@@ -4,8 +4,8 @@ RSpec.describe UserInterface do
   describe "ship setup scenario" do
     it "introduces" do
       io = double(:io)
-      player1 = double(:game)
-      player2 = double(:game, rows: 10, cols: 10)
+      player1 = double(:game, player_name: "seb", )
+      player2 = double(:game, player_name: "harith", rows: 10, cols: 10)
       interface = UserInterface.new(io, player1, player2)
       expect(io).to receive(:puts).and_return("Welcome to the game!")
       expect(io).to receive(:puts).and_return("Set up your ships first.")
@@ -15,14 +15,14 @@ RSpec.describe UserInterface do
 
     it "allows the user to setup single ship" do
       io = double(:io)
-      player1 = double(:game, rows: 10, cols: 10)
-      player2 = double(:game, rows: 10, cols: 10)
+      player1 = double(:game, player_name: "seb", rows: 10, cols: 10)
+      player2 = double(:game,player_name: "harith",  rows: 10, cols: 10)
       interface = UserInterface.new(io, player1, player2)
       expect(player1).to receive(:unplaced_ships).and_return([
         double(:ship, length: 2),
         double(:ship, length: 5),
       ])
-      expect(io).to receive(:puts).with("You have these ships remaining: 2, 5")
+      expect(io).to receive(:puts).with("seb has these ships remaining: 2, 5")
       expect(io).to receive(:puts).with("Which do you wish to place?")
       expect(io).to receive(:gets).and_return("2\n")
       expect(io).to receive(:puts).with("Vertical or horizontal? [vh]")
@@ -58,6 +58,26 @@ RSpec.describe UserInterface do
         ".........."
       ].join("\n"))
       interface.place_ship_on_board(player1)
+      end
+
+      xit "allows the player to shoot a ship" do
+        io = double(:io)
+        player1 = double(:game, player_name: "harith", rows: 10, cols: 10, coords: [[1,1],[1,2],[1,3][1,4]])
+        player2 = double(:game,player_name: "harith", rows: 10, cols: 10, hit_array: [[1,1]], miss_array:[])
+        user_interface = UserInterface.new(io, player1, player2)
+
+        expect(io).to receive(:puts).with("These are your hits and misses so far:")
+        expect(io).to receive(:puts).with("X.........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........")
+        expect(io).to receive(:puts).with("Please select a position to fire at")
+        expect(io).to receive(:puts).with("Which row?")
+        expect(io).to receive(:gets).and_return("1")
+        expect(io).to receive(:puts).with("Which column?")
+        expect(io).to receive(:gets).and_return("2")
+
+        expect(io).to receive(:puts).with("Hit!")
+
+        user_interface.prompt_for_player(player2, player1)
+        expect(player2.hit_array).to eq [[1,2]]
       end
 
     describe "#intro method" do
