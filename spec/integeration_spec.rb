@@ -217,4 +217,47 @@ RSpec.describe "Integration" do
 
     expect(user_interface.format_shots(player1)).to eq "XO........\nXO........\nXO........\nXO........\n..........\n..........\n..........\n..........\n..........\n.........."
   end
+
+  # TESTING WHILE LOOP IN RUN METHOD
+  xit "game ends when player 1 destroys all player 2's ships" do
+    io = TerminalIO.new
+    ship_1 = Ship.new("Carrier",2)
+    arr = [ship_1]
+    player1 = Game.new("seb",10,10, arr)
+    player2 = Game.new("harith",10,10, arr)
+
+    interface = UserInterface.new(io, player1, player2)
+
+    expect(io).to receive(:puts).with("seb has these ships remaining: 2")
+    expect(io).to receive(:puts).with("Which do you wish to place?")
+    expect(io).to receive(:gets).and_return("2\n")
+    expect(io).to receive(:puts).with("Vertical or horizontal? [vh]")
+    expect(io).to receive(:gets).and_return("h\n")
+    expect(io).to receive(:puts).with("Which row?")
+    expect(io).to receive(:gets).and_return("1\n")
+    expect(io).to receive(:puts).with("Which column?")
+    expect(io).to receive(:gets).and_return("1\n")
+    expect(io).to receive(:puts).with("OK.")
+    expect(io).to receive(:puts).with("This is your board now:")
+    expect(io).to receive(:puts).with("S.........\nS.........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........")
+
+    expect(io).to receive(:puts).with("harith has these ships remaining: 2")
+    expect(io).to receive(:puts).with("Which do you wish to place?")
+    expect(io).to receive(:gets).and_return("2\n")
+    expect(io).to receive(:puts).with("Vertical or horizontal? [vh]")
+    expect(io).to receive(:gets).and_return("h\n")
+    expect(io).to receive(:puts).with("Which row?")
+    expect(io).to receive(:gets).and_return("2\n")
+    expect(io).to receive(:puts).with("Which column?")
+    expect(io).to receive(:gets).and_return("2\n")
+    expect(io).to receive(:puts).with(".S........\n.S........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........")
+
+    expect(io).to receive(:puts).with("seb these are your hits and misses so far:")
+    expect(io).to receive(:puts).with("..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........")
+    expect(io).to receive(:puts).with("harith please select a position to fire at")
+    expect(io).to receive(:puts).with("Which row?")
+    expect(io).to receive(:gets).and_return("1")
+    expect(io).to receive(:puts).with("Which column?")
+    expect(io).to receive(:gets).and_return("1")
+  end
 end
