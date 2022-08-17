@@ -22,7 +22,7 @@ RSpec.describe "Integration" do
     ship_4 = Ship.new("Submarine",3)
     ship_5 = Ship.new("Destroyer",2)
     arr = [ship_1, ship_2, ship_3, ship_4, ship_5]
-    game = Game.new(10,10, arr)
+    game = Game.new("seb",10,10, arr)
     expect(game.unplaced_ships).to eq [ship_1, ship_2, ship_3, ship_4, ship_5]
     end
 
@@ -34,9 +34,9 @@ RSpec.describe "Integration" do
     ship_4 = Ship.new("Submarine",3)
     ship_5 = Ship.new("Destroyer",2)
     arr = [ship_1, ship_2, ship_3, ship_4, ship_5]
-    player1 = Game.new(10,10, arr)
-    player2 = Game.new(10,10, arr)
-    expect(io).to receive(:puts).with("You have these ships remaining: 5, 4, 3, 3, 2")
+    player1 = Game.new("seb",10,10, arr)
+    player2 = Game.new("harith",10,10, arr)
+    expect(io).to receive(:puts).with("seb has these ships remaining: 5, 4, 3, 3, 2")
     expect(io).to receive(:puts).with("Which do you wish to place?")
     expect(io).to receive(:gets).and_return("5\n")
     expect(io).to receive(:puts).with("Vertical or horizontal? [vh]")
@@ -60,9 +60,9 @@ RSpec.describe "Integration" do
     ship_4 = Ship.new("Submarine",3)
     ship_5 = Ship.new("Destroyer",2)
     arr = [ship_1, ship_2, ship_3, ship_4, ship_5]
-    player1 = Game.new(10,10, arr)
-    player2 = Game.new(10,10, arr)
-    expect(io).to receive(:puts).with("You have these ships remaining: 5, 4, 3, 3, 2")
+    player1 = Game.new("seb",10,10, arr)
+    player2 = Game.new("harith",10,10, arr)
+    expect(io).to receive(:puts).with("seb has these ships remaining: 5, 4, 3, 3, 2")
     expect(io).to receive(:puts).with("Which do you wish to place?")
     expect(io).to receive(:gets).and_return("5\n")
     expect(io).to receive(:puts).with("Vertical or horizontal? [vh]")
@@ -75,17 +75,17 @@ RSpec.describe "Integration" do
     expect(io).to receive(:puts).with("This is your board now:")
     expect(io).to receive(:puts)
     .with("S.........\nS.........\nS.........\nS.........\nS.........\n..........\n..........\n..........\n..........\n..........")
-  #"S........."
-  #"S........."
-  #"S........."
-  #"S........."
-  #"S........."
-  #".........."
-  #".........."
-  #".........."
-  #".........."
-  #".........."
-    expect(io).to receive(:puts).with("You have these ships remaining: 4, 3, 3, 2")
+    #"S........."
+    #"S........."
+    #"S........."
+    #"S........."
+    #"S........."
+    #".........."
+    #".........."
+    #".........."
+    #".........."
+    #".........."
+    expect(io).to receive(:puts).with("seb has these ships remaining: 4, 3, 3, 2")
     expect(io).to receive(:puts).with("Which do you wish to place?")
     expect(io).to receive(:gets).and_return("4\n")
     expect(io).to receive(:puts).with("Vertical or horizontal? [vh]")
@@ -140,9 +140,9 @@ RSpec.describe "Integration" do
     ship_4 = Ship.new("Submarine",3)
     ship_5 = Ship.new("Destroyer",2)
     arr = [ship_1, ship_2, ship_3, ship_4, ship_5]
-    player1 = Game.new(10,10, arr)
-    player2 = Game.new(10,10, arr)
-    expect(io).to receive(:puts).with("You have these ships remaining: 5, 4, 3, 3, 2")
+    player1 = Game.new("seb",10,10, arr)
+    player2 = Game.new("harith",10,10, arr)
+    expect(io).to receive(:puts).with("seb has these ships remaining: 5, 4, 3, 3, 2")
     expect(io).to receive(:puts).with("Which do you wish to place?")
     expect(io).to receive(:gets).and_return("6\n") # LENGTH 6 DOESN'T EXIST (RE-PROMPT)
     expect(io).to receive(:puts).with("Vertical or horizontal? [vh]")
@@ -183,14 +183,15 @@ RSpec.describe "Integration" do
     io = TerminalIO.new
     ship_1 = Ship.new("Carrier",5)
     arr = [ship_1]
-    player1 = Game.new(10,10, arr)
-    player2 = Game.new(10,10, arr)
+    player1 = Game.new("seb",10,10, arr)
+    player2 = Game.new("harith",10,10, arr)
 
     player1.coords = [[1,1],[1,2],[1,3][1,4]] #Set up player's board
     user_interface = UserInterface.new(io, player1, player2)
 
-    expect(io).to receive(:puts).with("These are your hits and misses so far:")
+    expect(io).to receive(:puts).with("harith these are your hits and misses so far:")
     expect(io).to receive(:puts).with("..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........")
+    expect(io).to receive(:puts).with("harith please select a position to fire at")
     expect(io).to receive(:puts).with("Which row?")
     expect(io).to receive(:gets).and_return("1")
     expect(io).to receive(:puts).with("Which column?")
@@ -207,13 +208,56 @@ RSpec.describe "Integration" do
     io = TerminalIO.new
     ship_1 = Ship.new("Carrier",5)
     arr = [ship_1]
-    player1 = Game.new(10,10, arr)
-    player2 = Game.new(10,10, arr)
+    player1 = Game.new("seb",10,10, arr)
+    player2 = Game.new("harith",10,10, arr)
 
     player1.hit_array = [[1,1],[1,2],[1,3],[1,4]] 
     player1.miss_array = [[2,1],[2,2],[2,3],[2,4]] 
     user_interface = UserInterface.new(io, player1, player2)
 
     expect(user_interface.format_shots(player1)).to eq "XO........\nXO........\nXO........\nXO........\n..........\n..........\n..........\n..........\n..........\n.........."
+  end
+
+  # TESTING WHILE LOOP IN RUN METHOD
+  xit "game ends when player 1 destroys all player 2's ships" do
+    io = TerminalIO.new
+    ship_1 = Ship.new("Carrier",2)
+    arr = [ship_1]
+    player1 = Game.new("seb",10,10, arr)
+    player2 = Game.new("harith",10,10, arr)
+
+    interface = UserInterface.new(io, player1, player2)
+
+    expect(io).to receive(:puts).with("seb has these ships remaining: 2")
+    expect(io).to receive(:puts).with("Which do you wish to place?")
+    expect(io).to receive(:gets).and_return("2\n")
+    expect(io).to receive(:puts).with("Vertical or horizontal? [vh]")
+    expect(io).to receive(:gets).and_return("h\n")
+    expect(io).to receive(:puts).with("Which row?")
+    expect(io).to receive(:gets).and_return("1\n")
+    expect(io).to receive(:puts).with("Which column?")
+    expect(io).to receive(:gets).and_return("1\n")
+    expect(io).to receive(:puts).with("OK.")
+    expect(io).to receive(:puts).with("This is your board now:")
+    expect(io).to receive(:puts).with("S.........\nS.........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........")
+
+    expect(io).to receive(:puts).with("harith has these ships remaining: 2")
+    expect(io).to receive(:puts).with("Which do you wish to place?")
+    expect(io).to receive(:gets).and_return("2\n")
+    expect(io).to receive(:puts).with("Vertical or horizontal? [vh]")
+    expect(io).to receive(:gets).and_return("h\n")
+    expect(io).to receive(:puts).with("Which row?")
+    expect(io).to receive(:gets).and_return("2\n")
+    expect(io).to receive(:puts).with("Which column?")
+    expect(io).to receive(:gets).and_return("2\n")
+    expect(io).to receive(:puts).with(".S........\n.S........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........")
+
+    expect(io).to receive(:puts).with("seb these are your hits and misses so far:")
+    expect(io).to receive(:puts).with("..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........\n..........")
+    expect(io).to receive(:puts).with("harith please select a position to fire at")
+    expect(io).to receive(:puts).with("Which row?")
+    expect(io).to receive(:gets).and_return("1")
+    expect(io).to receive(:puts).with("Which column?")
+    expect(io).to receive(:gets).and_return("1")
   end
 end

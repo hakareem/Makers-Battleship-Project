@@ -11,7 +11,8 @@ class UserInterface
   end
 
   def place_ship_on_board(player)
-    show "You have these ships remaining: #{ships_unplaced_message(player)}"
+    # show player's name 
+    show "#{player.player_name} has these ships remaining: #{ships_unplaced_message(player)}"
     prompt_for_ship_placement(player)
     show "This is your board now:"
     show format_board(player)
@@ -31,19 +32,26 @@ class UserInterface
     
 
   def prompt_for_player(shooting_player, opp_player)
-    show "These are your hits and misses so far:"
+    show "#{shooting_player.player_name} these are your hits and misses so far:"
     show format_shots(shooting_player)
     # show shooting player's hits and misses so far
+    show "#{shooting_player.player_name} please select a position to fire at"
     ship_row = prompt "Which row?"
     ship_col = prompt "Which column?"
-    if opp_player.ship_at?(ship_row.to_i, ship_col.to_i)
+    x = ship_row.to_i
+    y = ship_col.to_i
+    if x.is_a?(Integer) && y.is_a?(Integer)
+    if opp_player.ship_at?(x, y)
       show "Hit!"
-      shooting_player.hit_array << [ship_col.to_i, ship_row.to_i] 
+      shooting_player.hit_array << [y, x] 
     else
       show "Miss!"
-      shooting_player.miss_array << [ship_col.to_i, ship_row.to_i]
+      shooting_player.miss_array << [y, x]
     end
+  else 
+    fail "#{shooting_player.player_name} make sure your input is a valid integer!"
   end
+end
 
   # def play(player1, player2)
   #   prompt_for_player(player1)
@@ -53,7 +61,7 @@ class UserInterface
     intro
     setup_player(@player1)
     setup_player(@player2)
-    p @player2.coords
+    # p @player2.coords
     shooter = @player1
     opposition = @player2
 
@@ -62,16 +70,13 @@ class UserInterface
       break if check_win(shooter)
       shooter, opposition = opposition, shooter
     end
-    show "#{shooter} has won the game!"
+    show "#{shooter.player_name} has won the battle!"
   end
 
   def check_win(player)
-
     #cheap
     player.coords.length == player.hit_array.length
-
   end
-
 
   def format_shots(player)
   return (1..player.rows).map do |y|
