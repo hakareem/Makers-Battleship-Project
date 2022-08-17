@@ -80,9 +80,30 @@ RSpec.describe UserInterface do
         expect(player2.hit_array).to eq [[1,2]]
       end
 
-    describe "#intro method" do
-      it "creates two boards and decides who goes first" do
-      
-      end
+      it "checks for valid input" do
+        io = double(:io)
+        player1 = double(:game, player_name: "seb", rows: 10, cols: 10)
+        player2 = double(:game,player_name: "harith",  rows: 10, cols: 10)
+        interface = UserInterface.new(io, player1, player2)
+
+        expect(io).to receive(:puts).with("Which column?")
+        expect(io).to receive(:gets).and_return("v")
+        expect(io).to receive(:puts).with("Incorrect column input!")        
+        expect(io).to receive(:puts).with("Which column?")
+        expect(io).to receive(:gets).and_return("12")
+        expect(io).to receive(:puts).with("Incorrect column input!")
+        expect(io).to receive(:puts).with("Which column?")
+        expect(io).to receive(:gets).and_return("1")        
+
+        expect(io).to receive(:puts).with("Which row?")
+        expect(io).to receive(:gets).and_return("v")
+        expect(io).to receive(:puts).with("Incorrect row input!")        
+        expect(io).to receive(:puts).with("Which row?")
+        expect(io).to receive(:gets).and_return("12")
+        expect(io).to receive(:puts).with("Incorrect row input!")
+        expect(io).to receive(:puts).with("Which row?")
+        expect(io).to receive(:gets).and_return("1")   
+
+        expect(interface.valid_input?).to eq [1,1]
     end
 end
