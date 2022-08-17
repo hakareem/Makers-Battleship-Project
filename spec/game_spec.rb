@@ -5,9 +5,10 @@ RSpec.describe Game do
   context "construct the class" do
     it "returns the rows and cols" do
     ship_arr = double :Ship
-    game = Game.new("harith",3,3,ship_arr)
+    game = Game.new("apple",3,3,ship_arr)
     expect(game.rows).to eq 3
     expect(game.cols).to eq 3
+    expect(game.player_name).to eq "apple"
     end
   end
 
@@ -16,7 +17,7 @@ RSpec.describe Game do
     ship_1 = double :Ship, length: 3
     ship_2 = double :Ship, length: 2
     ship_arr = [ship_1, ship_2]
-    game = Game.new("harith",10,10,ship_arr)
+    game = Game.new("green",10,10,ship_arr)
     game.place_ship({length: 3, orientation: :vertical,row: 2, col: 2})
     result = game.coords
     expect(result).to eq [[2,2],[2,3],[2,4]]
