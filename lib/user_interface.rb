@@ -30,26 +30,52 @@ class UserInterface
     setup_player(player2)
   end
     
+  def valid_input?
+
+    # check players inputs for x and y to make sure they're actual integers
+
+    #while x is not an int 
+
+    x = nil
+    y = nil
+
+    while true
+      x = prompt "Which column?"
+      x = x.to_i
+      break if x > 0 && x <= 10
+      show "Incorrect column input!"
+    end
+
+    #prompt and check x
+
+    while true
+      y = prompt "Which row?"
+      y = y.to_i
+      break if y > 0 && y <= 10
+      show "Incorrect row input!"
+    end
+
+    #while y i not an int
+    #prompt and check y
+
+    #return x,y
+    return x, y 
+  end
 
   def prompt_for_player(shooting_player, opp_player)
     show "#{shooting_player.player_name} these are your hits and misses so far:"
     show format_shots(shooting_player)
     # show shooting player's hits and misses so far
     show "#{shooting_player.player_name} please select a position to fire at"
-    ship_row = prompt "Which row?"
-    ship_col = prompt "Which column?"
-    x = ship_row.to_i
-    y = ship_col.to_i
-    if x.is_a?(Integer) && y.is_a?(Integer)
+
+    x, y = valid_input?
+
     if opp_player.ship_at?(x, y)
       show "Hit!"
-      shooting_player.hit_array << [y, x] 
+      shooting_player.hit_array << [x, y] 
     else
       show "Miss!"
-      shooting_player.miss_array << [y, x]
-    end
-  else 
-    fail "#{shooting_player.player_name} make sure your input is a valid integer!"
+      shooting_player.miss_array << [x, y] 
   end
 end
 
